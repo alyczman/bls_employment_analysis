@@ -1,24 +1,15 @@
-from pyspark.sql.tpyes import *
+# BLS Series IDs
 
-# Set up a list of BLS Series ID's for pulling Employment Data
-
-def bls_ids():
-    listSchema = StructType([StructField("seriesID", StringType()),StructField("industry_name", StringType())])
-
-    series_list = ([['CEU0000000001','Total nonfarm'],
-                    ['CEU0500000001','Total private'],
-                    ['CEU0600000001','Goods-producing'],
-                    ['CEU0700000001','Service-providing'],
-                    ['CEU4000000001','Trade, transportation, and utilities'],
-                    ['CEU4142000001','Wholesale trade'],
-                    ['CEU4200000001','Retail trade'],
-                    ['CEU6056150001','Travel arrangement and reservation services'],
-                    ['CEU7072250001','Restaurants and other eating places'],
-                    ['CEU7071000001','Arts, entertainment, and recreation'],
-                    ['CEU6054150001','Computer systems design and related services'],
-                    ['CEU6054161001','Management consulting services']
-                ])
-
-    sdf = spark.createDataFrame(series_list,schema=listSchema) 
-    sdf.createOrReplaceTempView("series")
-    display(sdf)
+series_list = ([['CEU0000000001','Total nonfarm'],
+                ['CEU0500000001','Total private'],
+                ['CEU0600000001','Goods-producing'],
+                ['CEU0700000001','Service-providing'],
+                ['CEU4000000001','Trade, transportation, and utilities'],
+                ['CEU4142000001','Wholesale trade'],
+                ['CEU4200000001','Retail trade'],
+                ['CEU6056150001','Travel arrangement and reservation services'],
+                ['CEU7072250001','Restaurants and other eating places'],
+                ['CEU7071000001','Arts, entertainment, and recreation'],
+                ['CEU6054150001','Computer systems design and related services'],
+                ['CEU6054161001','Management consulting services']
+            ])

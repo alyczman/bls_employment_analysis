@@ -31,7 +31,7 @@ def main(seriesID, startYr, endYr, bls_key):
     series_data = []
 
     for series in json_data['Results']['series']:
-        x = prettytable(['series id', 'year', 'period', 'value'])
+        #x = prettytable(['series id', 'year', 'period', 'value']) will use this in a later iterations
         seriesID = series['seriesID']
         for item in series['data']:
             year = item['year']
