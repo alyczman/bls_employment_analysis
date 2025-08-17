@@ -1,40 +1,46 @@
+from id_validation import id_check
 import pandas as pd
+import prettytable
 import requests
 import json
 import config
 
-def main(seriesID, StartYr, EndYr, bls_key):
+def main(seriesID, startYr, endYr, bls_key):
     headers = {'Content-type':'application/json'}
     # api url
     bls_api_url = 'https://api.bls.gov/publicAPI/v2/timeseries/data'
 
     # setup inputs to the API: series ID, start year, end year, and api key
 
-    data = json.dumps({'SeriesID': [seriesID], 
-                       'startyear': StartYr, 
-                       'endyear': EndYr, 
+    data = json.dumps({'seriesID': [seriesID], 
+                       'startyear': startYr, 
+                       'endyear': endYr, 
                        'registrationKey':bls_key})
 
     # access the api and extract the outputs
     p = requests.post(bls_api_url, data=data, 
                       headers=headers)
-    json_data = p.json()
+    json_data = json.loads(p.text)
+
+    if 'Results' not in json_data:
+        print(f'No results found for {seriesID}: {json_data}')
+        return []
+    
 
     # parse the output into the list
     series_data = []
-    try:
-        for series in json_data['Results']['Series']:
-            seriesID = series['seriesID']
-            for item in series['data']:
-                year = item['year']
-                period = item['period']
-                value = item['value']
 
-        if 'M01' <= period <= 'M12':
-            series_data.append([seriesID, year, period, value])
-    except KeyError as e:
-        print('Error in API response:', json_data)
-        raise e
+    for series in json_data['Results']['series']:
+        x = prettytable(['series id', 'year', 'period', 'value'])
+        seriesID = series['seriesID']
+        for item in series['data']:
+            year = item['year']
+            period = item['period']
+            value = item['value']
+
+            if period.startswith('M') and 1 <= int(period[1:]) <= 12:
+                series_data.append([seriesID, year, period, value])
+    
     
     return series_data
 
@@ -54,6 +60,8 @@ if __name__ == "__main__":
         ['CEU6054161001','Management consulting services']
     ]
 
+    validation_check = id_check(Industry_list, config.bls_key)
+
     # Convert industry list into data frame
     industries_df = pd.DataFrame(Industry_list, columns=["seriesID", "Industry_name"])
     print('Industry reference table: ')
@@ -61,9 +69,9 @@ if __name__ == "__main__":
 
 
     # Setup parameters
-    StartYr = '2015'
-    EndYr = '2020'# Set your BLS API Key here
-    key = config.bls_key #Setup Schema of the data sent from BLS
+    startYr = '2015'
+    endYr = '2020'
+    key = config.bls_key # BLS Key
 
     # Create list to capture the data
     complete_list = []
@@ -74,8 +82,8 @@ if __name__ == "__main__":
     for id in industries_df["seriesID"]:
         print(f'Fetching data for {id}...')
         complete_list.extend(main(id, 
-                                StartYr,
-                                EndYr,
+                                startYr,
+                                endYr,
                                 key))
 
 
