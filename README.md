@@ -10,8 +10,8 @@
 
 | Rank | Languages |
 |-----:|-----------|
-|     2| Python    |
-|     3| SQL       |
+|     1| Python    |
+|     2| SQL       |
 
 ## Tools Used
 
