@@ -13,3 +13,16 @@ series_list = ([['CEU0000000001','Total nonfarm'],
                 ['CEU6054150001','Computer systems design and related services'],
                 ['CEU6054161001','Management consulting services']
             ])
+
+IDs = ['CEU0000000001', 
+'CEU0500000001',
+'CEU0600000001',
+'CEU0700000001',
+'CEU4000000001',
+'CEU4142000001',
+'CEU4200000001',
+'CEU6056150001',
+'CEU7072250001',
+'CEU7071000001',
+'CEU6054150001',
+'CEU6054161001']

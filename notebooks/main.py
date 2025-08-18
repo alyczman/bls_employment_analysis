@@ -10,9 +10,14 @@ def main(seriesID, startYr, endYr, bls_key):
     # api url
     bls_api_url = 'https://api.bls.gov/publicAPI/v2/timeseries/data'
 
+    startYr = '2015'
+    endYr = '2020'
+
+    series_ids = ['LNS11300000']
+
     # setup inputs to the API: series ID, start year, end year, and api key
 
-    data = json.dumps({'seriesID': [seriesID], 
+    data = json.dumps({'seriesID': series_ids, 
                        'startyear': startYr, 
                        'endyear': endYr, 
                        'registrationKey':bls_key})
@@ -28,22 +33,25 @@ def main(seriesID, startYr, endYr, bls_key):
     
 
     # parse the output into the list
-    series_data = []
+    #series_data = []
 
     for series in json_data['Results']['series']:
-        #x = prettytable(['series id', 'year', 'period', 'value']) will use this in a later iterations
+        x = prettytable.PrettyTable(['series id', 'year', 'period', 'value']) # will use this in a later iterations
         seriesID = series['seriesID']
         for item in series['data']:
             year = item['year']
             period = item['period']
             value = item['value']
 
-            if period.startswith('M') and 1 <= int(period[1:]) <= 12:
-                series_data.append([seriesID, year, period, value])
-    
-    
-    return series_data
+            if 'M01' <= period <= 'M12':
+                x.add_row([seriesID, year, period, value])
 
+        output = open(seriesID + '.txt', 'w')
+        output.write(x.get_String())
+        output.close()
+    
+    #return series_data
+'''
 if __name__ == "__main__":
     Industry_list = [
         ['CEU0000000001','Total nonfarm'],
@@ -104,3 +112,4 @@ if __name__ == "__main__":
     print("\nSample of final Dataframe: ")
     print(bls_df.head())
 
+'''
