@@ -9,12 +9,12 @@ def id_check(industry_list, bls_key, startYr='2015', endYr='2020', verbose=True)
     
     Parameters
     ----------
-    industry_list : list of [seriesID, industry_name]
+    industry_list : list of [seriesID]
         List of series IDs with their industry names.
     bls_key : str
         Your BLS API key.
     startYr : str, optional
-        Start year for test query (default "2020").
+        Start year for test query (default "2015").
     endYr : str, optional
         End year for test query (default "2020").
     verbose : bool, optional
