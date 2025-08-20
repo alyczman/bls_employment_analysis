@@ -16,9 +16,9 @@
 ## Tools Used
 
 | Tools | Languages |
-|-----:|-----------|
-|     1| VSCode    |
-|     2| PostGres  |
+|-----:|----------- |
+|     1| VSCode     |
+|     2| PostGreSQL |
 
 
 ## Overview:
