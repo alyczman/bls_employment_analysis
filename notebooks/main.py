@@ -5,6 +5,7 @@ import requests
 import json
 import config
 
+
 startYr = '2015'
 endYr = '2020'
 series_ids = ['LNS11300000']
