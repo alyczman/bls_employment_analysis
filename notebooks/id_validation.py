@@ -31,7 +31,7 @@ def id_check(industry_list, bls_key, startYr='2015', endYr='2020', verbose=True)
     url = "https://api.bls.gov/publicAPI/v2/timeseries/data"
     headers = {"Content-type": "application/json"}
 
-    for sid, industry_name in industry_list:
+    for sid in industry_list:
         payload = json.dumps({
             "seriesid": [sid],
             "startyear": startYr,
@@ -55,25 +55,25 @@ def id_check(industry_list, bls_key, startYr='2015', endYr='2020', verbose=True)
                     status = "valid"
                     message = "Returned rows"
                     if verbose:
-                        print(f"✅ {sid} ({industry_name}) returned {n_rows} rows")
+                        print(f"✅ {sid} ({industry_list}) returned {n_rows} rows")
                 else:
                     status = "empty"
                     message = "No data returned"
                     if verbose:
-                        print(f"⚠️ {sid} ({industry_name}) returned no data")
+                        print(f"⚠️ {sid} ({industry_list}) returned no data")
             else:
                 status = "invalid"
                 message = str(json_data.get("message", "Invalid response"))
                 if verbose:
-                    print(f"❌ {sid} ({industry_name}) invalid response: {message}")
+                    print(f"❌ {sid} ({industry_list}) invalid response: {message}")
 
         except Exception as e:
             status = "error"
             message = str(e)
             if verbose:
-                print(f"❌ {sid} ({industry_name}) error: {e}")
+                print(f"❌ {sid} ({industry_list}) error: {e}")
 
-        results.append([sid, industry_name, status, n_rows, message])
+        results.append([sid, industry_list, status, n_rows, message])
 
     results_df = pd.DataFrame(results, columns=["seriesID", "industry_name", "status", "n_rows", "message"])
     return results_df

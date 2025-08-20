@@ -15,7 +15,7 @@ def main():
 
     # Validate that series_ids have data 
 
-    id_check(series_ids)
+    id_check(series_ids, startYr, endYr, bls_key)
 
     # Access BLS API to pull requested series_ids
 
