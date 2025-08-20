@@ -1,15 +1,14 @@
+# Import packages
+
 import config
 from data_pull import bls_series_pull
 from data_export import export_to_excel
 from id_validation import id_check
-import os
-import pandas as pd
 
+# Define function inputs
 
-
-
-startYr = int('2015')
-endYr = int('2020')
+startYr = '2015'
+endYr = '2020'
 series_ids = ['LNS11300000']
 bls_key = config.bls_key
 
