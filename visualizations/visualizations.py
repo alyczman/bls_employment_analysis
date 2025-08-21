@@ -1,5 +1,8 @@
 import matplotlib as mpl
+import pandas as pd
 
+file_path = '../data/LaborForceParticipationRate.csv'
 
-def create_visuals():
-    pass
+df = pd.read_csv(file_path)
+print(df.head())
+
