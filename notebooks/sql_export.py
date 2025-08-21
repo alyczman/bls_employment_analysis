@@ -41,6 +41,7 @@ def create_database():
 
 def write_to_DB():
     
+    
     conn = ps.connect(database = "BLS_Data",
                             user = 'postgres',
                             password = config.password,
@@ -49,16 +50,22 @@ def write_to_DB():
 
     
     conn.autocommit = True
+
+    # Create cursor object to open connection to DB
     cursor = conn.cursor()
 
     # Create new table
-    sql = '''CREATE TABLE SERIES_DETAILS(SERIESID CHAR(20),\
-                                  YEAR SMALLINT,\
-                                  PERIOD CHAR(3),\
-                                  VALUE DECIMAL);'''
+    create_table_sql = '''
+            CREATE TABLE IF NOT EXISTS SERIES_DETAILS(
+                                SERIESID CHAR(20),\
+                                YEAR SMALLINT,\
+                                PERIOD CHAR(3),\
+                                VALUE DECIMAL
+                                );
+            '''
     
     # Create BLS_Data table
-    cursor.execute(sql)
+    cursor.execute(create_table_sql)
 
     # Load data from data directory to database
     data_load = '''COPY SERIES_DETAILS(seriesID, year, period, value)
@@ -68,14 +75,14 @@ def write_to_DB():
 
 
     try:
-
         cursor.execute(data_load)
         print('Data loaded successfully.')
 
     except Exception as e:
-         print(f'Error during data load {e}.')
+        print(f'Error during data load {e}.')
 
     conn.commit()
+    cursor.close()
     conn.close()
 
 

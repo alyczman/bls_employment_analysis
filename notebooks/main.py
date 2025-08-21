@@ -4,6 +4,7 @@ import config
 from data_pull import bls_series_pull
 from data_export import export_to_excel
 from id_validation import id_check
+from sql_export import create_database, write_to_DB
 
 # Define function inputs
 
@@ -28,6 +29,12 @@ def main():
 
     # Print head of data files
     print(data_file.head())
+
+    # Create database, if necessary
+    create_database()
+
+    # Write to table
+    write_to_DB()
 
 
 if __name__ == "__main__":
