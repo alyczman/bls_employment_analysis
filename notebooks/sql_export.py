@@ -23,10 +23,10 @@ def create_database():
         cursor = conn.cursor()
 
         # Create script to create the database
-        cursor.execute('Select 1 from pg_database where datname = %s, (DB_NAME,)')
+        cursor.execute("Select 1 from pg_database where datname = %s", (DB_NAME,))
         exists = cursor.fetchone()
         if not exists:
-            cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.identifier(DB_NAME)))
+            cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(DB_NAME)))
             print(f'Database {DB_NAME} created successfully.')
         else:
             print(f'Database {DB_NAME} already exists.')
@@ -68,16 +68,14 @@ def write_to_DB():
     cursor.execute(create_table_sql)
 
     # Load data from data directory to database
-    data_load = '''COPY SERIES_DETAILS(seriesID, year, period, value)
-            FROM '../data/LaborForceParticipationRate.csv'
-            DELIMITER ','
-            CSV HEADER'''
-
-
     try:
-        cursor.execute(data_load)
-        print('Data loaded successfully.')
-
+         
+        with open('../data/LaborForceParticipationRate.csv', 'r') as f:
+            cursor.copy_expert("""
+                                COPY SERIES_DETAILS(seriesID, year, period, value)
+                                FROM STDIN
+                                WITH CSV HEADER DELIMITER ','
+                                """, f)
     except Exception as e:
         print(f'Error during data load {e}.')
 
